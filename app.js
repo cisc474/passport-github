@@ -12,7 +12,7 @@ var session = require("express-session");
 
 
 var GITHUB_CLIENT_ID = "2bc60c01a7783b40ea01"
-var GITHUB_CLIENT_SECRET = "4c95b16966694b3cc44b8708e9c914fbc78746ef";
+var GITHUB_CLIENT_SECRET = "Get your own secret";
 
 
 // Passport session setup.
