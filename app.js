@@ -23,6 +23,9 @@ passport.deserializeUser(function(obj, done) {
 });
 
 
+var myIP = process.env.IP || "0.0.0.0";
+var myPORT = process.env.PORT || 3000;
+
 // Use the GitHubStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken, refreshToken, and GitHub
@@ -30,7 +33,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+    callbackURL: "http://"+myIP+":"+myPORT+"/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -108,8 +111,7 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-app.listen(3000);
-
+app.listen(myPORT, myIP);
 
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If
