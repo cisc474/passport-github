@@ -74,6 +74,7 @@ var app = express();
   app.use(passport.session());
 
 app.get('/', function(req, res){
+  console.log(req.user);
   res.render('index', { user: req.user });
 });
 
