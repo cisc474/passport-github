@@ -3,8 +3,16 @@ var express = require('express')
   , util = require('util')
   , GitHubStrategy = require('passport-github').Strategy;
 
-var GITHUB_CLIENT_ID = "--insert-github-client-id-here--"
-var GITHUB_CLIENT_SECRET = "--insert-github-client-secret-here--";
+var http = require('http');
+var bodyParser     = require('body-parser');
+var methodOverride = require('method-override');
+var morgan         = require('morgan');
+var cookieParser = require('cookie-parser');
+var session = require("express-session");
+
+
+var GITHUB_CLIENT_ID = "2bc60c01a7783b40ea01"
+var GITHUB_CLIENT_SECRET = "4c95b16966694b3cc44b8708e9c914fbc78746ef";
 
 
 // Passport session setup.
@@ -33,7 +41,7 @@ var myPORT = process.env.PORT || 3000;
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://"+myIP+":"+myPORT+"/auth/github/callback"
+    callbackURL: "https://github-oauth-andynovo.c9.io/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -50,26 +58,20 @@ passport.use(new GitHubStrategy({
 
 
 
-
-var app = express.createServer();
+var app = express();
 
 // configure Express
-app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
-  app.use(express.logger());
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(morgan());
+  app.use(cookieParser());
+  app.use(bodyParser());
+  app.use(methodOverride());
+  app.use(session({ secret: 'keyboard cat' }));
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
-});
-
 
 app.get('/', function(req, res){
   res.render('index', { user: req.user });
@@ -111,7 +113,9 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-app.listen(myPORT, myIP);
+
+var server = http.createServer(app);
+server.listen(myPORT, myIP);
 
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If

@@ -5,6 +5,11 @@
     "express": ">= 0.0.0",
     "ejs": ">= 0.0.0",
     "passport": ">= 0.0.0",
-    "passport-github": ">= 0.0.0"
+    "passport-github": ">= 0.0.0",
+    "morgan": "~1.0.0",
+    "body-parser": "~1.0.0",
+    "method-override": "~1.0.0",
+    "cookie-parser" : "~1.0.0",
+    "express-session" : "~1.0.0"
   }
 }
